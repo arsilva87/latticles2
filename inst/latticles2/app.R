@@ -14,6 +14,9 @@ check.packages(packages)
 
 latticles2 <- function(direc, anos)
 {
+   if(is.null(direc)) return()
+   if(is.null(anos)) return()
+	
    # arquivos zip no diretorio
    files <- list.files(direc)
    n <- length(files)
