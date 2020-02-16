@@ -353,8 +353,7 @@ ui <- fluidPage(
                   <anderson.silva[at]ifgoiano.edu.br>"),
          helpText("da Silva, A.R. (2019). Latticles: avaliacao eficiente da 
                   producao cientifica. Programa de computador. 
-                  Registro INPI: BR512019001166-0. <https://arsilva87.github.io/latticles_app/>,
-                  <https://arsilva87.github.io/latticles2/>"),
+                  Registro INPI: BR512019001166-0. <https://arsilva87.github.io/latticles_app/>"),
 	 helpText("GNU General Public Licence, version 3.0")
       )
    ),
