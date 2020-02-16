@@ -27,7 +27,7 @@ Instituto Federal Goiano - Campus Urutaí
 # Citação
 Para citar o programa em publicações, use:
 
-da Silva, A.R. (2019). Latticles: avaliacao eficiente da producao cientifica. Programa de computador. Registro INPI: BR512019001166-0. <https://arsilva87.github.io/latticles_app>, <https://arsilva87.github.io/latticles_app>
+da Silva, A.R. (2019). Latticles: avaliacao eficiente da producao cientifica. Programa de computador. Registro INPI: BR512019001166-0. <https://arsilva87.github.io/latticles_app>, <https://arsilva87.github.io/latticles2>
 
 # Licenca
 GNU Public Licence, version 3.0
