@@ -20,16 +20,19 @@ devtools::install_github("arsilva87/latticles2")
 latticles2::latticles2()
 ```
 
-# Contato
-Desenvolvedor/mantenedor do pacote: da Silva, A. R. <anderson.silva@ifgoiano.edu.br>.
-Instituto Federal Goiano - Campus Urutaí
+Para mais instruções, assista ao vídeo demonstrativo em: <https://youtu.be/mi-etEUeL2Y>
 
 # Citação
 Para citar o programa em publicações, use:
 
-da Silva, A.R. (2019). Latticles: avaliacao eficiente da producao cientifica. Programa de computador. Registro INPI: BR512019001166-0. <https://arsilva87.github.io/latticles_app>, <https://arsilva87.github.io/latticles2>
+da Silva, A.R. (2019). Latticles: avaliacao eficiente da producao cientifica. Programa de computador. Registro INPI: BR512019001166-0. Disponível em: <https://arsilva87.github.io/latticles_app>.
+
+# Contato
+Desenvolvedor/mantenedor do pacote: da Silva, A. R. <anderson.silva@ifgoiano.edu.br>.
+Instituto Federal Goiano - Campus Urutaí.
+
+Lattes: <http://lattes.cnpq.br/3916683240962357>
 
 # Licenca
-GNU General Public Licence, version 3.0
-
-Latticles2 (C) Copyright 2020 da Silva, A.R.
+GNU General Public Licence, version 3.0.
+Latticles (C) Copyright 2019 da Silva, A. R.
