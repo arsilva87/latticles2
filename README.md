@@ -21,5 +21,15 @@ latticles2::latticles2()
 ```
 
 # Contato
-Desenvolvedor/mantenedor do pacote: da Silva, A. R. (anderson.silva@ifgoiano.edu.br).
+Desenvolvedor/mantenedor do pacote: da Silva, A. R. <anderson.silva@ifgoiano.edu.br>.
 Instituto Federal Goiano - Campus Urutaí
+
+# Citação
+Para citar o programa em publicações, use:
+
+da Silva, A.R. (2019). Latticles: avaliacao eficiente da producao cientifica. Programa de computador. Registro INPI: BR512019001166-0. <https://arsilva87.github.io/latticles_app>, <https://arsilva87.github.io/latticles_app>
+
+# Licenca
+GNU Public Licence, version 3.0
+
+Latticles2 (C) Copyright 2020 da Silva, A.R.
