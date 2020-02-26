@@ -353,7 +353,8 @@ server <- shinyServer(function(input, output, session){
 ui <- fluidPage(
    # App title
    titlePanel(title=h3(img(src="logo_latticles.png", height = 90), 
-      "Analise eficiente da producao tecnica e cientifica")), 
+      "Analise eficiente da producao tecnica e cientifica"), 
+       windowTitle="latticles 2.0"), 
    helpText("Importe artigos de um grupo de pesquisadores, classifique pelo 
              Qualis-CAPES (novo), contabilize producoes tecnicas e mais, tudo de forma 
              automatizada a partir de arquivos XML do curriculo Lattes."),
