@@ -352,7 +352,8 @@ server <- shinyServer(function(input, output, session){
 # ui -------------------------------------------------------------
 ui <- fluidPage(
    # App title
-   titlePanel("Latticles App 2.0"),
+   titlePanel(title=h3(img(src="logo_latticles.png", height = 90), 
+      "Analise eficiente da producao tecnica e cientifica")), 
    helpText("Importe artigos de um grupo de pesquisadores, classifique pelo 
              Qualis-CAPES (novo), contabilize producoes tecnicas e mais, tudo de forma 
              automatizada a partir de arquivos XML do curriculo Lattes."),
@@ -379,8 +380,10 @@ ui <- fluidPage(
       mainPanel(
          tabPanel("Producoes",
             downloadButton("downloadData", "Exportar planilha (.csv)"),
-            br(), tableOutput("producao"),
-            helpText("Legenda. A1-C: Artigos qualificados no periodo, 
+            tags$hr(),
+            tableOutput("producao"),
+            tags$hr(),
+            h6("Legenda. A1-C: Artigos qualificados no periodo, 
               NP: artigos publicados em nao periodicos, 
               Total_art: total de artigos no periodo,
               Qualis_A: total de artigos A1-A4, 
