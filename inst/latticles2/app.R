@@ -197,6 +197,26 @@ artigosLattes <- function(XML, anos)
       orgdat = data.frame(Ano = NA, Titulo = NA)  
    }
 
+   # part em bancas --------------------------------------------------------------
+   conc <- try(xml_children(XML)[[grep("PARTICIPACAO-EM-BANCA-TRABALHOS-CONCLUSAO", xml_children(XML))]], silent = TRUE)
+   ban <- try(xml_children(conc)[[grep("PARTICIPACAO-EM-BANCA-TRABALHOS-CONCLUSAO", xml_children(conc))]], silent = TRUE)
+   banGD <- try(as_list(xml_children(ban)[grep("PARTICIPACAO-EM-BANCA-DE-GRADUACAO", xml_children(ban))]), silent = TRUE)
+   banQL <- try(as_list(xml_children(ban)[grep("PARTICIPACAO-EM-BANCA-DE-EXAME-QUALIFICACAO", xml_children(ban))]), silent = TRUE)
+   banMS <- try(as_list(xml_children(ban)[grep("PARTICIPACAO-EM-BANCA-DE-MESTRADO", xml_children(ban))]), silent = TRUE)
+   banDS <- try(as_list(xml_children(ban)[grep("PARTICIPACAO-EM-BANCA-DE-DOUTORADO", xml_children(ban))]), silent = TRUE)
+   if (class(banGD) != "try-error" & !is.null(banGD)) {
+      contGD <- sapply(lapply(banGD, "[[", "DADOS-BASICOS-DA-PARTICIPACAO-EM-BANCA-DE-GRADUACAO"), attr, "ANO")
+   } else { contGD <- NA }
+   if (class(banQL) != "try-error" & !is.null(banQL)) {
+      contQL <- sapply(lapply(banQL, "[[", "DADOS-BASICOS-DA-PARTICIPACAO-EM-BANCA-DE-EXAME-QUALIFICACAO"), attr, "ANO")
+   } else { contQL <- NA }
+   if (class(banMS) != "try-error" & !is.null(banMS)) {
+      contMS <- sapply(lapply(banMS, "[[", "DADOS-BASICOS-DA-PARTICIPACAO-EM-BANCA-DE-MESTRADO"), attr, "ANO")
+   } else { contMS <- NA }
+   if (class(banDS) != "try-error" & !is.null(banDS)) {
+      contDS <- sapply(lapply(banDS, "[[", "DADOS-BASICOS-DA-PARTICIPACAO-EM-BANCA-DE-DOUTORADO"), attr, "ANO")
+   } else { contDS <- NA }
+
    # output ------------------------------------------------------------------
    artigodat <- subset(artigodat, Ano >= anos[1] & Ano <= anos[2])
    metrics <- table(artigodat$Qualis)
@@ -223,10 +243,16 @@ artigosLattes <- function(XML, anos)
    orgdat <- subset(orgdat, Ano >= anos[1] & Ano <= anos[2])
    outorg <- c(Org_eventos = nrow(orgdat))
 
+   bancas <- c(
+      bancas_Grad = sum(contGD >= anos[1] & contGD <= anos[2], na.rm = TRUE),
+      bancas_Qualif = sum(contQL >= anos[1] & contQL <= anos[2], na.rm = TRUE),
+      bancas_MS = sum(contMS >= anos[1] & contMS <= anos[2], na.rm = TRUE),
+      bancas_DS = sum(contDS >= anos[1] & contDS <= anos[2], na.rm = TRUE) )
+
    out <- list(nome = nome, atual = datat., metricas = resumo, 
       artigos_tec = outartt, trabalhos = resumoT,
       livros = outlivro, capitulos = outcap, orientacoes = outorien,
-      software = outsoft, patentes = outpat, org = outorg)
+      software = outsoft, patentes = outpat, org = outorg, bancas = bancas)
    return(out)
 }
 
@@ -277,11 +303,14 @@ latticles_mult <- function(direc, anos)
    # org eventos
    spamOr <- do.call("rbind", lapply(quanti, "[[", "org"))
 
+   # bancas
+   spamB <- do.call("rbind", lapply(quanti, "[[", "bancas"))
+
    # output
    nomes <- sapply(quanti, "[[", "nome")
    out <- cbind(artigos = spam, artigos_tec = spamAt, trabalhos = spamT,
       livros = spamL, capitulos = spamC, orien = spamO, 
-      soft = spamS, pat = spamP, org = spamOr)
+      soft = spamS, pat = spamP, org = spamOr, bancas = spamB)
    out2 <- data.frame("Nome-----------------------------------------------------------" = c(nomes, "TOTAL"), 
       Data = c(sapply(quanti, "[[", "atual"), " "), 
       rbind(out, TOTAL = colSums(out)))
@@ -362,7 +391,10 @@ ui <- fluidPage(
               Doutorado/Mestrado/Outras_orient: orientacoes concluidas no periodo,
               Software_nReg/Reg: programas de computador nao/registrados,
               Patentes: patentes concedidas,
-              Org_eventos: eventos tecnico-cientificos organizados.")
+              Org_eventos: eventos tecnico-cientificos organizados,
+              bancas_Grad/_Qualif/_MS/_DS: participacao em bancas de trabalhos de 
+                conclusao de graduacao, exames de qualificacao, defesas de mestrado 
+                e doutorado.")
          )
       )
    )
