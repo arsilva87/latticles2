@@ -262,7 +262,7 @@ artigosLattes <- function(XML, anos)
 
 latticles_mult <- function(direc, anos)
 {
-   if(is.null(direc)) return()
+   if(is.null(direc)) return(NULL)
    if(is.null(anos)) return()
 
    # arquivos zip no diretorio
@@ -321,25 +321,25 @@ latticles_mult <- function(direc, anos)
 
 # server ---------------------------------------------------
 server <- shinyServer(function(input, output, session){
-   direc <-reactive({
+   direc <- reactive({
       f1 <- input$direc
-      if(is.null(f1)) return() else f1
+      if(is.null(f1)) return(NULL) else f1
    })
    output$direc <- renderPrint(direc())
    anos <- reactive({
       ano <- input$range
-      if(is.null(ano)) return(NULL) else as.integer(ano)
+      if(is.null(ano)) return() else as.integer(ano)
    })
-   output$producao <- renderTable({ 
+   tab <- reactive({
       latticles_mult(direc(), anos())
-   }, digits = 0, spacing = "xs")
+   })
+   output$producao <- renderTable({ tab() }, digits = 0, spacing = "xs")
    output$downloadData <- downloadHandler(
          filename = function() {
             paste("producao", ".csv", sep = "")
          },
-         content = function(file) {
-            write.csv(latticles_mult(direc(), anos()), file)
-   })
+         content = function(file) { write.csv(tab(), file) }
+   )
    onSessionEnded = function(callback) {
       return(.closedCallbacks$register(callback))
    }
@@ -361,7 +361,7 @@ ui <- fluidPage(
    sidebarLayout(
       # Menu here
       sidebarPanel(width = 3,
-         textInput("direc", label = 'Informe o caminho do diretorio contendo os arquivos XML do Lattes'),
+         textInput("direc", value = NULL, label = 'Informe o caminho do diretorio contendo os arquivos XML do Lattes'),
          br(),
          sliderInput("range", "Intervalo de tempo:",
               min = 1999, max = 2021, value = c(2017, 2019), step = 1, sep = ""),
