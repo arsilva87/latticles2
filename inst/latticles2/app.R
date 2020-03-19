@@ -322,10 +322,11 @@ latticles_mult <- function(direc, anos)
 # server ---------------------------------------------------
 server <- shinyServer(function(input, output, session){
    direc <- reactive({
-      f1 <- input$direc
-      if(is.null(f1)) return(NULL) else f1
+      validate(
+         need(input$direc != "", "...waiting for the input folder")
+      )
+      input$direc
    })
-   output$direc <- renderPrint(direc())
    anos <- reactive({
       ano <- input$range
       if(is.null(ano)) return() else as.integer(ano)
