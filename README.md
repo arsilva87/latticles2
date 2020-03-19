@@ -5,7 +5,9 @@ Latticles2 é uma iniciativa sem fins lucrativos desenvolvido especialmente para
 
 # Instalação
 
-Para instalação do app, será necessária uma versão recente (>3.4) do software livre R (www.r-project.org). Em seguida, o pacote devtools deverá ser instalado.
+Antes mesmo de instalar em seu computador, saiba que você pode também executar o app diretamente através da nuvem. Acesse https://arsilva.shinyapps.io/latticles2/
+
+Para instalação, será necessária uma versão recente (>3.4) do software livre R (www.r-project.org). Em seguida, o pacote devtools deverá ser instalado.
 
 ```r
 install.packages(devtools)
