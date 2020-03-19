@@ -260,13 +260,10 @@ artigosLattes <- function(XML, anos)
 # --------------------------------------------------
 # latticles para multiplos curriculos
 
-latticles_mult <- function(direc, anos)
+latticles_mult <- function(filesIn, anos)
 {
-   if(is.null(direc)) return(NULL)
-   if(is.null(anos)) return()
-
    # arquivos zip no diretorio
-   files <- list.files(direc, pattern = "zip|xml")
+   files <- filesIn$name
    n <- length(files)
 
    # loop
@@ -274,7 +271,7 @@ latticles_mult <- function(direc, anos)
    on.exit(progress$close())
    xmls <- quanti <- list()
    for(i in 1:n) {
-      xmls[[i]] <- read_xml(paste(direc, "\\", files[i], sep = ""))
+      xmls[[i]] <- read_xml(filesIn$datapath[i])
       quanti[[i]] <- artigosLattes(XML = xmls[[i]], anos = anos)
       progress$set(message = "Computando as producoes", value = i/n,
          detail = paste("Curriculo", i, "de", n))
@@ -320,19 +317,19 @@ latticles_mult <- function(direc, anos)
 
 
 # server ---------------------------------------------------
-server <- shinyServer(function(input, output, session){
-   direc <- reactive({
+server <- shinyServer(function(input, output){
+   filesIn <- reactive({
       validate(
-         need(input$direc != "", "...waiting for the input folder")
+         need(input$files != "", "...waiting for the input files")
       )
-      input$direc
+      input$files
    })
    anos <- reactive({
       ano <- input$range
       if(is.null(ano)) return() else as.integer(ano)
    })
    tab <- reactive({
-      latticles_mult(direc(), anos())
+      latticles_mult(filesIn(), anos())
    })
    output$producao <- renderTable({ tab() }, digits = 0, spacing = "xs")
    output$downloadData <- downloadHandler(
@@ -341,12 +338,6 @@ server <- shinyServer(function(input, output, session){
          },
          content = function(file) { write.csv(tab(), file) }
    )
-   onSessionEnded = function(callback) {
-      return(.closedCallbacks$register(callback))
-   }
-   session$onSessionEnded(function() {
-      stopApp()
-   })
 })
 
 
@@ -362,7 +353,7 @@ ui <- fluidPage(
    sidebarLayout(
       # Menu here
       sidebarPanel(width = 3,
-         textInput("direc", value = NULL, label = 'Informe o caminho do diretorio contendo os arquivos XML do Lattes'),
+         fileInput("files", "Selecione um ou mais arquivos XML ou zip do Lattes", multiple = TRUE),
          br(),
          sliderInput("range", "Intervalo de tempo:",
               min = 1999, max = 2021, value = c(2017, 2019), step = 1, sep = ""),
