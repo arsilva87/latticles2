@@ -1,14 +1,5 @@
-# --------------------------------------------------
-# checar pacote
-check.packages <- function(pkg){
-    new.pkg <- pkg[!(pkg %in% installed.packages()[, "Package"])]
-    if (length(new.pkg)) 
-        install.packages(new.pkg, dependencies = TRUE)
-    sapply(pkg, require, character.only = TRUE)
-}
-packages <- c("xml2", "shiny")
-check.packages(packages)
 
+library(xml2)
 
 # ----------------------------------------------------------
 # function artigosLattes
@@ -116,13 +107,19 @@ artigosLattes <- function(XML, anos)
       # loop
       MS = DS = Outra = c()
       for(i in grep("MESTRADO", orien)) {
-         MS[i] <- attr(orien[[i]][["DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO"]], "ANO")
+        if(is.null(attr(orien[[i]][["DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO"]], "ANO")))
+          MS[i] <- NA else
+            MS[i] <- attr(orien[[i]][["DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-MESTRADO"]], "ANO")
       }
       for(i in grep("DOUTORADO", orien)) {
-         DS[i] <- attr(orien[[i]][["DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO"]], "ANO")
+        if(is.null(attr(orien[[i]][["DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO"]], "ANO")))
+          DS[i] <- NA else
+            DS[i] <- attr(orien[[i]][["DADOS-BASICOS-DE-ORIENTACOES-CONCLUIDAS-PARA-DOUTORADO"]], "ANO")
       }
       for(i in grep("OUTRAS", orien)) {
-         Outra[i] <- attr(orien[[i]][["DADOS-BASICOS-DE-OUTRAS-ORIENTACOES-CONCLUIDAS"]], "ANO")
+        if(is.null(attr(orien[[i]][["DADOS-BASICOS-DE-OUTRAS-ORIENTACOES-CONCLUIDAS"]], "ANO")))
+          Outra[i] <- NA else
+            Outra[i] <- attr(orien[[i]][["DADOS-BASICOS-DE-OUTRAS-ORIENTACOES-CONCLUIDAS"]], "ANO")
       }
       outorien <- c(Mestrado = sum(as.numeric(MS) >= anos[1] & as.numeric(MS) <= anos[2], na.rm=TRUE), 
          Doutorado = sum(as.numeric(DS) >= anos[1] & as.numeric(DS) <= anos[2], na.rm=TRUE),
